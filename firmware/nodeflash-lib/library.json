@@ -1,0 +1,9 @@
+{
+  "name": "nodeflash",
+  "version": "1.0.0",
+  "description": "Update STM32 node firmware over RS-485. ESP32 side: NodeflashHost.h (host engine, USB console). STM32 application side: nodeflash_client.h. Shared: bus_packet.h, boot_protocol.h.",
+  "keywords": ["rs485", "bootloader", "firmware update", "stm32", "esp32"],
+  "frameworks": ["arduino"],
+  "platforms": ["espressif32", "ststm32"],
+  "build": { "srcDir": "src", "includeDir": "src" }
+}

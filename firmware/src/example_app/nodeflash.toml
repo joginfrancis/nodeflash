@@ -1,0 +1,14 @@
+# nodeflash.toml - links this application to the nodeflash update tool.
+# Upload with:  nodeflash update --project <this folder> [--nodes 1-20]
+
+[app]
+name  = "example_app"
+# One file for all nodes, or {id} / {id:02d} for one file per node (node ID built in).
+image = ".pio/build/app_v1/firmware.bin"
+# Optional: command run before uploading ({id} allowed). Remove to upload existing files.
+build = "pio run -e app_v1"
+# Node IDs this application is for.
+nodes = "1"
+
+[gateway]
+port = "auto"   # or e.g. "COM6"
