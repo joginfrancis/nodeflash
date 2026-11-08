@@ -2,7 +2,7 @@
 // bootloader. Two builds (env app_v1 / app_v2) differ only in APP_VERSION so an
 // update is easy to see:
 //   v1: PB12 blinks slowly (1 Hz)      v2: PB12 blinks fast (5 Hz)
-// The console (COM5, 115200) prints the version every 2 s.
+// The console (USART2, the ST-Link virtual COM port, 115200) prints the version every 2 s.
 //
 // Like the real node it uses the 64 MHz HSE clock, the DMA RS-485 receiver and
 // a 500 ms watchdog, so the test covers starting from the bootloader with all

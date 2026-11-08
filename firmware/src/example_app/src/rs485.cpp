@@ -2,7 +2,7 @@
 #include "rs485.h"
 
 // USART3's pins as the core names them. On the node board the SP3485's RO is
-// wired to PB2 and DI to PB0 (found 2026-11-08), so CR2.SWAP below exchanges
+// wired to PB2 and DI to PB0 (this board), so CR2.SWAP below exchanges
 // them: the USART transmits on PB0 and receives on PB2.
 static constexpr PinName  PIN_RX = PB_0;
 static constexpr PinName  PIN_TX = PB_2;

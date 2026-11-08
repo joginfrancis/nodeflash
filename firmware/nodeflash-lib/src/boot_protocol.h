@@ -1,7 +1,7 @@
-// boot_protocol.h - firmware update over RS-485 (test, 2026-11-08).
+// boot_protocol.h - nodeflash: firmware update commands over RS-485.
 //
 // Uses the normal bus packet ([0xAA][DEST][CMD][LEN][payload][CRC-16]) from
-// wall_protocol.h with these extra commands. Every command is addressed to one
+// bus_packet.h with these extra commands. Every command is addressed to one
 // node and answered (CMD | 0x80), so the master always knows where it stands.
 //
 // Flash layout on the STM32G070RB (128 KB, 2 KB pages):
@@ -43,7 +43,7 @@ constexpr uint32_t BOOT_RAM_END   = 0x20009000;  // 36 KB
 
 // Checks the first two words of an image (initial stack pointer, reset address)
 // so a file built for 0x08000000, or not a firmware at all, is never marked
-// valid. The same rule is in update.py.
+// valid. The same rule is in the PC tool (nodeflash/image.py).
 inline uint8_t bootCheckImage(uint32_t sp, uint32_t reset, uint32_t size) {
   if (sp < BOOT_RAM_START + 1024 || sp > BOOT_RAM_END || (sp & 3)) return BOOT_ERR_IMAGE;
   if (!(reset & 1)) return BOOT_ERR_IMAGE;  // Thumb code: lowest bit set
@@ -54,7 +54,7 @@ inline uint8_t bootCheckImage(uint32_t sp, uint32_t reset, uint32_t size) {
 
 // The vector check alone isn't enough: an image built for 0x08000000 that is
 // bigger than 8 KB usually has its reset address inside the application range
-// too (seen 2026-11-08 with the normal node firmware). But such an image is
+// too (seen in testing with a normal non-offset build). But such an image is
 // full of addresses of its own first 8 KB (literal pools, function pointers),
 // while an image built for 0x08002000 never points into the bootloader.
 // Returns how many 32-bit words of the image point into 0x08000000-0x08001FFF.

@@ -7,9 +7,9 @@
 //   - no valid application (record missing or CRC wrong)                    -> stay
 //   - otherwise listen 100 ms; a packet for this node in that time          -> stay
 //   - else start the application at 0x08002000
-// While staying: PB12 blinks fast, the console (COM5, 115200) logs, and the
+// While staying: PB12 blinks fast, the console (USART2 on PA2/PA3, e.g. the ST-Link virtual COM port, 115200) logs, and the
 // node answers BOOT_CMD_* packets on the RS-485 bus (PB0 TX / PB2 RX swapped,
-// DE on PB1), at the wall's bus speed.
+// DE on PB1), at the application's bus speed (BUS_BAUD_HZ).
 #include <stdint.h>
 #include <string.h>
 #include "stm32g070xx.h"
@@ -25,7 +25,7 @@ constexpr uint32_t LISTEN_MS = 100;
 constexpr uint16_t RX_BUF_SIZE = 1024;
 
 // The USART needs at least 16 clocks per bit (BRR >= 16). At 16 MHz that caps
-// the bus at 1 Mbaud; a faster BUS_BAUD must fail here, not silently on the wall.
+// the bus at 1 Mbaud; a faster BUS_BAUD must fail here, not silently in the field.
 static_assert(CLK_HZ / BUS_BAUD >= 16, "bootloader at 16 MHz can't run this bus speed: raise its clock first");
 static_assert(CLK_HZ % BUS_BAUD == 0 || CLK_HZ / BUS_BAUD >= 100, "bus speed not exact at 16 MHz");
 
@@ -249,7 +249,7 @@ static uint32_t rd32(const uint8_t* p) { uint32_t v; memcpy(&v, p, 4); return v;
 
 static void handle() {
   if (parser.dest != NODE_ID) return;
-  // Only update commands keep the bootloader running; normal wall traffic (polls,
+  // Only update commands keep the bootloader running; normal application traffic (polls,
   // frames) during the start-up window must not hold a node in the bootloader.
   if ((parser.cmd & 0xF0) != 0x30) return;
   stay = true;

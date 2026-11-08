@@ -1,7 +1,7 @@
 // bus_packet.h - RS-485 packet framing used by nodeflash (bootloader, gateway,
-// client library). Byte-for-byte the same format as the wall's protocol v2
-// (common/wall_protocol.h in the wall project), kept separate so the bundle
-// builds on its own. If the wall's framing ever changes, change both.
+// client library). Applications on the same bus can use the same framing for
+// their own commands (FrameParser, buildFrame); commands 0x30-0x3F are
+// reserved for nodeflash.
 //
 // Packet: [0xAA][DEST][CMD][LEN lo][LEN hi][PAYLOAD x LEN][CRC lo][CRC hi]
 // CRC-16/CCITT-FALSE (poly 0x1021, init 0xFFFF) over DEST, CMD, LEN and PAYLOAD.

@@ -1,6 +1,6 @@
 // RS-485 on USART3 with TX/RX swapped: TX PB0 (to SP3485 DI), RX PB2 (from RO),
-// DE (+ /RE) PB1. Wiring confirmed by test 2026-11-08 (the README's PB0 = RX
-// is the other way round).
+// DE (+ /RE) PB1, as wired on the reference board (the chip's default PB0 = RX
+// is the other way round, hence the swap).
 //
 // Receive: DMA writes every byte into a circular buffer, so reception keeps
 // going while the NeoPixel library has interrupts off.

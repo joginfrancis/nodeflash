@@ -1,7 +1,7 @@
 """Linking an application project to nodeflash: nodeflash.toml.
 
     [app]
-    name   = "kinetic wall node"
+    name   = "my node app"
     image  = ".pio/build/node{id:02d}/firmware.bin"   # one file for all nodes, or {id} / {id:02d} per node
     build  = "pio run -e node{id:02d}"               # optional, run before uploading ({id} allowed)
     nodes  = "1-20"                                   # node IDs this application is for
