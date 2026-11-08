@@ -138,7 +138,10 @@ def link(root: str, image: str = None, build: str = None, nodes: str = "1-20", n
         text = open(ini, encoding="utf-8", errors="replace").read()
         envs = re.findall(r"^\[env:([^\]]+)\]", text, re.M)
         if "flash_offset" not in text or "0x2000" not in text:
-            lib = os.path.relpath(FIRMWARE_LIB, root).replace(os.sep, "/")
+            try:
+                lib = os.path.relpath(FIRMWARE_LIB, root).replace(os.sep, "/")
+            except ValueError:  # Windows: application and nodeflash on different drives
+                lib = FIRMWARE_LIB.replace(os.sep, "/")
             log("platformio.ini is not built for the bootloader yet. Add to its [env] section:\n")
             log(PIO_LINES.format(lib=lib))
             log("and hand bus packets to nodeflashHandle() (see firmware/nodeflash-lib/src/nodeflash_client.h).\n")
